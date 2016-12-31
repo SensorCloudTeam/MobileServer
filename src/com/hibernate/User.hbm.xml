@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-12-30 13:34:40 by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping package="com.hibernate">
+ <class catalog="wsn" name="User" table="user">
+  <id name="id" type="string">
+   <column length="14" name="id"/>
+   <generator class="assigned"/>
+  </id>
+  <property generated="never" lazy="false" name="password" type="string">
+   <column length="100" name="password" not-null="true">
+    <comment>ÃÜÂë£¨6-15Î»£©</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="email" type="string">
+   <column name="email">
+    <comment>ÓÃ»§¹ØÁªÓÊÏä</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="regTime" type="string">
+   <column length="20" name="reg_time" not-null="true">
+    <comment>×¢²áµÄÊ±¼ä</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="poster" type="boolean">
+   <column name="poster" not-null="true">
+    <comment>ÊÇ·ñÎª·¢²¼·½£¬false±íÊ¾²»ÊÇ</comment>
+   </column>
+  </property>
+  <set fetch="select" inverse="true" lazy="true" name="subscriptions"
+   sort="unsorted" table="subscription">
+   <key>
+    <column length="14" name="user_id" not-null="true">
+     <comment>¶©ÔÄÈËµÄid</comment>
+    </column>
+   </key>
+   <one-to-many class="Subscription"/>
+  </set>
+  <set fetch="select" inverse="true" lazy="true" name="pushregs"
+   sort="unsorted" table="pushreg">
+   <key>
+    <column length="14" name="user_id" not-null="true"/>
+   </key>
+   <one-to-many class="Pushreg"/>
+  </set>
+  <set fetch="select" inverse="true" lazy="true" name="sinks"
+   sort="unsorted" table="sink">
+   <key>
+    <column length="14" name="user_id">
+     <comment>Íâ¼ü£¬Ö¸Ïòuser±íÖÐµÄid</comment>
+    </column>
+   </key>
+   <one-to-many class="Sink"/>
+  </set>
+ </class>
+</hibernate-mapping>

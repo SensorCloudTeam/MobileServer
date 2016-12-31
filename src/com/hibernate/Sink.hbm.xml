@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-12-30 13:34:40 by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping package="com.hibernate">
+ <class catalog="wsn" name="Sink" table="sink">
+  <id name="id" type="string">
+   <column length="20" name="id"/>
+   <generator class="assigned"/>
+  </id>
+  <many-to-one class="User" fetch="select" name="user">
+   <column length="14" name="user_id">
+    <comment>Íâ¼ü£¬Ö¸Ïòuser±íÖÐµÄid</comment>
+   </column>
+  </many-to-one>
+  <property generated="never" lazy="false" name="name" type="string">
+   <column length="100" name="name" not-null="true">
+    <comment>½ÚµãÃû×Ö</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="longitude" type="big_decimal">
+   <column name="longitude" precision="12" scale="9">
+    <comment>¾­¶È£¬Ð¡Êýµãºó±£Áô9Î»£¬·¶Î§¡¾-180~180¡¿</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="latitude" type="big_decimal">
+   <column name="latitude" precision="11" scale="9">
+    <comment>Î³¶È£¬Ð¡Êýµãºó±£Áô9Î»£¬·¶Î§¡¾-90~90¡¿</comment>
+   </column>
+  </property>
+  <set fetch="select" inverse="true" lazy="true" name="sensors"
+   sort="unsorted" table="sensor">
+   <key>
+    <column length="20" name="sink_id" not-null="true">
+     <comment>Íâ¼ü£¬Ö¸Ïòsink±íÖÐµÄid</comment>
+    </column>
+   </key>
+   <one-to-many class="Sensor"/>
+  </set>
+ </class>
+</hibernate-mapping>

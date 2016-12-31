@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-12-30 13:34:40 by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping package="com.hibernate">
+ <class catalog="wsn" name="SubView" table="sub_view">
+  <composite-id class="SubViewId" mapped="false" name="id" unsaved-value="undefined">
+   <key-property name="id" type="string">
+    <column length="51" name="id"/>
+   </key-property>
+   <key-property name="userId" type="string">
+    <column length="14" name="user_id"/>
+   </key-property>
+   <key-property name="sendFrequency" type="java.lang.Integer">
+    <column name="send_frequency"/>
+   </key-property>
+   <key-property name="address" type="string">
+    <column name="address"/>
+   </key-property>
+   <key-property name="filter" type="int">
+    <column name="filter"/>
+   </key-property>
+   <key-property name="thresholdValue" type="java.lang.Float">
+    <column name="threshold_value" precision="12" scale="0"/>
+   </key-property>
+   <key-property name="regId" type="string">
+    <column length="24" name="regID"/>
+   </key-property>
+   <key-property name="sensorId" type="string">
+    <column length="26" name="sensor_id"/>
+   </key-property>
+   <key-property name="sensorName" type="string">
+    <column length="100" name="sensor_name"/>
+   </key-property>
+   <key-property name="dataTime" type="timestamp">
+    <column length="19" name="data_time"/>
+   </key-property>
+   <key-property name="sensorValue" type="string">
+    <column length="10000" name="sensor_value"/>
+   </key-property>
+   <key-property name="typeName" type="string">
+    <column length="20" name="type_name"/>
+   </key-property>
+  </composite-id>
+ </class>
+</hibernate-mapping>
