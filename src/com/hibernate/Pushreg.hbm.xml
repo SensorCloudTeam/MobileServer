@@ -2,13 +2,13 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 2016-12-30 13:34:40 by Hibernate Tools 4.3.1.Final -->
-<hibernate-mapping package="com.hibernate">
+<hibernate-mapping default-lazy="false" package="com.hibernate">
  <class catalog="wsn" name="Pushreg" table="pushreg">
   <id name="id" type="java.lang.Integer">
    <column name="id"/>
    <generator class="identity"/>
   </id>
-  <many-to-one class="User" fetch="select" name="user">
+  <many-to-one class="User" lazy="false" fetch="select" name="user">
    <column length="14" name="user_id" not-null="true"/>
   </many-to-one>
   <property generated="never" lazy="false" name="regId" type="string">

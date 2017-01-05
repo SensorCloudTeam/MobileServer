@@ -2,13 +2,13 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 2016-12-30 13:34:40 by Hibernate Tools 4.3.1.Final -->
-<hibernate-mapping package="com.hibernate">
+<hibernate-mapping default-lazy="false" package="com.hibernate">
  <class catalog="wsn" name="Sink" table="sink">
   <id name="id" type="string">
    <column length="20" name="id"/>
    <generator class="assigned"/>
   </id>
-  <many-to-one class="User" fetch="select" name="user">
+  <many-to-one class="User" fetch="select" lazy="false" name="user">
    <column length="14" name="user_id">
     <comment>Íâ¼ü£¬Ö¸Ïòuser±íÖÐµÄid</comment>
    </column>

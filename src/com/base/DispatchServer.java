@@ -11,8 +11,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.mine.UserThread;
+import com.publish.SinkThread;
+
 import net.sf.json.JSONObject;
-import net.sf.json.JSONString;
 
 public class DispatchServer {
 	private static final Log log = LogFactory.getLog(DispatchServer.class);
@@ -33,7 +34,7 @@ public class DispatchServer {
 				InputStream is = socket.getInputStream();
 				DataInputStream dis = new DataInputStream(is);
 				JSONObject jsonObj = JSONObject.fromObject(dis.readUTF());
-			
+			    System.out.println(jsonObj.toString());
 				/*
 				 * v：version, 协议版本 
 				 * d：domain, 作用的数据范围
@@ -48,8 +49,7 @@ public class DispatchServer {
 				JSONObject content = jsonObj.getJSONObject("u");
 				JSONObject localContent = jsonObj.getJSONObject("l");
 				ProtoMessage msg = new ProtoMessage(version,domain,type,action,content,localContent);
-				
-				System.out.println(type);
+		
 				if (version.equals("v1")) {
 					if (domain.equals("user")) {
 						//Runnable r = new UserThread(socket, version, domain, type,action, content);
@@ -58,13 +58,14 @@ public class DispatchServer {
 					} else if (domain.equals("sensor")) {
 						
 					} else if (domain.equals("sink")) {
-
+						Runnable r = new SinkThread(socket,msg);
+						new Thread(r).start();
 					} else {
 						log.debug("domain warning, has no defined " + domain);
 					}
 				}
 			}
-		} catch (IOException e) {
+		} catch(IOException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 

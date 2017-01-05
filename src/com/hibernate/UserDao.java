@@ -28,31 +28,21 @@ public class UserDao {
 		return false;
 	}
 	public User getUserById(String id){
+		Session session = null;
+		User user = null;
 		try{
 			Configuration cfg = new Configuration();
 			SessionFactory sf = cfg.configure().buildSessionFactory();
-			Session s = sf.openSession();
-			s.beginTransaction();
-			/*
-			//Transaction tx = s.beginTransaction();
-			List<User> list = s.createSQLQuery("select * from user where id='"+id+"'").list();
-			if(list==null||list.size()==0){
-				log.debug("has no User "+id);
-				return null;
-			}
-			else{
-				return list.get(0);
-			}
-			*/
-			User user = (User)s.get(User.class, id);
-			//System.out.println(user.getEmail());
-			s.getTransaction().commit();
-			//s.close();
-			return user;
+			session = sf.openSession();
+			session.beginTransaction();
+			user = (User)session.get(User.class, id);
+			session.getTransaction().commit();
 		}
 		catch(RuntimeException re){
 			log.error("vaidate User instatnce faild",re);
+		}finally{
+			session.close();
 		}
-		return null;
+		return user;
 	}
 }

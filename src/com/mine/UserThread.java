@@ -11,10 +11,9 @@ import org.apache.commons.logging.LogFactory;
 import com.base.DispatchServer;
 import com.base.ProtoMessage;
 import com.base.Protocal;
+import com.base.DefinedUtil;
 import com.hibernate.User;
 import com.hibernate.UserDao;
-
-import net.sf.json.JSONObject;
 
 public class UserThread implements Runnable, Protocal {
 	private static final Log log = LogFactory.getLog(DispatchServer.class); // 日志操作对象
@@ -102,10 +101,12 @@ public class UserThread implements Runnable, Protocal {
 					 * m: message,表示和code对应的信息，可选
 					 * d: data,表示服务器返回的结果，可选
 					 */
-					String output = "{c:'201', d:{sid:'" + sessionId + "'}}";
+					//String output = "{c:'201', d:{sid:'" + sessionId + "'}}";
+					String output = DefinedUtil.composeJSONString("201", "success","{sid:'" + sessionId + "'}");
 					dos.writeUTF(output);
 				} else {
-					String output = "{c:'404',}";
+					//String output = "{c:'404', m:'failed'}";
+					String output = DefinedUtil.composeJSONString("404", "failed");
 					dos.writeUTF(output);
 				}
 				dos.close();
@@ -134,8 +135,11 @@ public class UserThread implements Runnable, Protocal {
 		try {
 			OutputStream os = socket.getOutputStream();
 			DataOutputStream dos = new DataOutputStream(os);
-			if (!checkLogin()) {
-				dos.writeUTF("{c:'404', m:'no login', d:{}}");
+			String sid = msg.localContent.getString("sid");
+			if (!DefinedUtil.checkLogin(sid)) {
+				//dos.writeUTF("{c:'404', m:'no login', d:{}}");
+				String output = DefinedUtil.composeJSONString("404", "no login");
+				dos.writeUTF(output);
 				return;
 			}
 			String id = msg.definedContent.getString("id");
@@ -147,11 +151,14 @@ public class UserThread implements Runnable, Protocal {
 
 				if (user != null) {
 					//String result = JSONObject.fromObject(user).toString(); //此处使用该方法会出现org.hibernate.LazyInitializationException
-					String result = user.toJSONString(); //toJSONString时自定义方法
-					
-					dos.writeUTF("{c:'201',m:'success',d:'"+result+"'}");
+					//String result = user.toJSONString(); //toJSONString时自定义方法
+					//dos.writeUTF("{c:'201',m:'success',d:'"+result+"'}");
+					String output = DefinedUtil.composeJSONString("201", "success",user);
+					dos.writeUTF(output);
 				} else {
-					dos.writeUTF("{c:'404', m:'no user', d:{}}");
+					//dos.writeUTF("{c:'404', m:'no user', d:{}}");
+					String output = DefinedUtil.composeJSONString("404", "has no such user");
+					dos.writeUTF(output);
 				}
 				dos.close();
 				socket.close();
@@ -162,11 +169,5 @@ public class UserThread implements Runnable, Protocal {
 		}
 	}
 
-	/**
-	 * 检测是否已登录
-	 */
-	private boolean checkLogin() {
-		String sid = msg.localContent.getString("sid");
-		return DispatchServer.sessionList.contains(sid);
-	}
+	
 }

@@ -13,6 +13,7 @@ public class Monitor {
 	public static void main(String args[]){
 		login();
 		getUserInfo();
+		getSinkInfo();
 	}
 	
 	public static void login(){
@@ -40,6 +41,22 @@ public class Monitor {
 	        DataOutputStream dos=new DataOutputStream(os);
 	        String output2 = "{v:'v1',d:'user',t:'get',a:'one', u:{id:'test'}, l:{sid:'"+Monitor.sessionId+"'} }";
             dos.writeUTF(output2);
+            InputStream is = socket.getInputStream();
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	public static void getSinkInfo(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1',d:'sink',t:'get',a:'one', u:{id:'APkl9qzQ'}, l:{sid:'"+Monitor.sessionId+"'} }";
+            dos.writeUTF(output);
             InputStream is = socket.getInputStream();
             DataInputStream dis = new DataInputStream(is);
             String result = dis.readUTF();
