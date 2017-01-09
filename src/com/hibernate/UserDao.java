@@ -27,6 +27,25 @@ public class UserDao {
 		}
 		return false;
 	}
+	public void regist(User user){
+		Session session = null;
+		try{
+			Configuration cfg = new Configuration();
+			SessionFactory sf = cfg.configure().buildSessionFactory();
+			session = sf.openSession();
+			session.beginTransaction();
+			session.save(user);
+			session.getTransaction().commit();
+			
+		}
+		catch(RuntimeException re){
+			log.error("vaidate User instatnce faild",re);
+			session.getTransaction().rollback();
+		}finally{
+			session.close();
+		}
+	}
+	
 	public User getUserById(String id){
 		Session session = null;
 		User user = null;

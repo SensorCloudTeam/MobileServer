@@ -17,6 +17,7 @@ import com.hibernate.UserDao;
 
 public class UserThread implements Runnable, Protocal {
 	private static final Log log = LogFactory.getLog(DispatchServer.class); // 日志操作对象
+	private static final String String = null;
 	private ProtoMessage msg;
 	private Socket socket;
 
@@ -65,7 +66,9 @@ public class UserThread implements Runnable, Protocal {
 	}
 
 	public void post() {
-
+		if (msg.action.equals("regist")) {
+			regist();
+		}
 	}
 
 	public void put() {
@@ -158,6 +161,42 @@ public class UserThread implements Runnable, Protocal {
 				} else {
 					//dos.writeUTF("{c:'404', m:'no user', d:{}}");
 					String output = DefinedUtil.composeJSONString("404", "has no such user");
+					dos.writeUTF(output);
+				}
+				dos.close();
+				socket.close();
+			}
+
+		} catch (Exception ex) {
+			log.error("get user info error", ex);
+		}
+	}
+	
+	/**
+	 * 注册
+	 */
+	public void regist() {
+		try {
+			OutputStream os = socket.getOutputStream();
+			DataOutputStream dos = new DataOutputStream(os);
+			String id = msg.definedContent.getString("id");
+			String pwd = msg.definedContent.getString("pwd");
+			String email = msg.definedContent.getString("email");
+			long reg = System.currentTimeMillis();
+			String regTime = Long.toString(reg);
+			boolean poster = true;
+			if (id != null) {
+				UserDao dao = new UserDao();
+				User u = dao.getUserById(id);
+				if (u == null) {
+					User user = new User(id,pwd,regTime,poster);
+					user.setEmail(email);
+					dao.regist(user);
+					String output = DefinedUtil.composeJSONString("201", "success");
+					dos.writeUTF(output);
+				} else {
+					//dos.writeUTF("{c:'404', m:'no user', d:{}}");
+					String output = DefinedUtil.composeJSONString("404", "already has this username");
 					dos.writeUTF(output);
 				}
 				dos.close();
