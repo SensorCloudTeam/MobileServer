@@ -133,8 +133,8 @@ public class Sensor implements java.io.Serializable, DefinedJSONObject {
 		String result = "{";
 		result +="id:'"+id+"',";
 		result +="sensor_id:"+sensorId+",";
-		result +="sink:"+sink.toJSONString()+",";
-		result +="name:'"+name+"'";
+		//result +="sink:"+sink.toJSONString()+",";
+		result +="name:'"+name+"',";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		result +="date_time:'"+sdf.format(dataTime)+"',";
 		result +="sample_rate:"+sampleRate==null?"":sampleRate+",";

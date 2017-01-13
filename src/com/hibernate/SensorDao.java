@@ -137,7 +137,9 @@ public class SensorDao {
 			session = sf.openSession();
 			session.beginTransaction();
 			Criteria cri = session.createCriteria(Sensor.class);
-			cri.add(Restrictions.eq("sink_id",sinkId));
+			
+			Sink sink =  (Sink)session.load(Sink.class, sinkId);
+			cri.add(Restrictions.eq("sink",sink));
 			list = cri.list();
 			
 		}catch(Exception ex){

@@ -12,8 +12,10 @@ public class Monitor {
 	private static String sessionId;
 	public static void main(String args[]){
 		login();
-		getUserInfo();
-		getSinkInfo();
+		//getUserInfo();
+		//getSinkInfo();
+		getPubInfo();
+		getSensorInfo();
 	}
 	
 	public static void login(){
@@ -56,6 +58,40 @@ public class Monitor {
 			OutputStream os=socket.getOutputStream();  
 	        DataOutputStream dos=new DataOutputStream(os);
 	        String output = "{v:'v1',d:'sink',t:'get',a:'one', u:{id:'APkl9qzQ'}, l:{sid:'"+Monitor.sessionId+"'} }";
+            dos.writeUTF(output);
+            InputStream is = socket.getInputStream();
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void getPubInfo(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1',d:'sink',t:'get',a:'user_pub_many', u:{user_id:'lyz'}, l:{sid:'"+Monitor.sessionId+"'} }";
+            dos.writeUTF(output);
+            InputStream is = socket.getInputStream();
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void getSensorInfo(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1',d:'sensor',t:'get',a:'sink_many', u:{sink_id:'ewfh1bQS'}, l:{sid:'"+Monitor.sessionId+"'} }";
             dos.writeUTF(output);
             InputStream is = socket.getInputStream();
             DataInputStream dis = new DataInputStream(is);

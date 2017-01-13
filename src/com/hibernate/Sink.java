@@ -85,7 +85,7 @@ public class Sink implements java.io.Serializable, com.base.DefinedJSONObject {
 	public String toJSONString(){
 		String str = "{";
 		str += "id:'"+id+"',";
-		str += "user:"+user.toJSONString()+",";
+		//str += "user:"+user.toJSONString()+",";
 		str += "name:'"+name+"',";
 		str += "longitude:'"+longitude.toString()+"',";
 		str += "latitude:'"+latitude.toString()+"'";

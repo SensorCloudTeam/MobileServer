@@ -117,8 +117,10 @@ public class SinkDao {
 			SessionFactory sf = cfg.configure().buildSessionFactory();
 			session = sf.openSession();
 			session.beginTransaction();
-			Criteria cri = session.createCriteria(Sensor.class);
-			cri.add(Restrictions.eq("user_id",userId));
+			Criteria cri = session.createCriteria(Sink.class);
+			
+			User user=(User)session.load(User.class, userId);
+			cri.add(Restrictions.eq("user",user));
 			list = cri.list();
 			
 		}catch(Exception ex){
