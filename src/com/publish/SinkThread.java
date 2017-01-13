@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.net.Socket;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,9 +18,16 @@ import com.hibernate.SinkDao;
 import com.hibernate.UserDao;
 
 public class SinkThread implements Runnable,Protocal{
-	private static final Log log = LogFactory.getLog(DispatchServer.class); // 日志操作对象
-	private ProtoMessage msg; 
-	//msg = {v:'v1', d:'sink', t:'post', a:'one', u:{user_id:'lyz',name:'wxs',longitude:'',latitude:''}, l:{sid:'sessionID'}}
+	private static final Log log = LogFactory.getLog(SinkThread.class); // 日志操作对象
+	/**
+	 * msg = {v:'v1', d:'sink', t:'post', a:'one', u:{user_id:'lyz',name:'wxs',longitude:'',latitude:''}, l:{sid:'sessionID'}} ; 发布sink节点
+	 * 	   = {v:'v1', d:'sink', t:'put', a:'one', u:{id:'ewfh1bQS',name:'wxs',longitude:'',latitude:''}, l:{sid:'sessionID'}} ; 修改sink节点
+	 * 	   = {v:'v1', d:'sink', t:'del', a:'one', u:{id:'ewfh1bQS'}, l:{sid:'sessionID'}} ; 删除sink节点
+	 *     = {v:'v1', d:'sink', t:'get', a:'one', u:{id:'ewfh1bQS'}} ; 获取sink节点
+	 *     = {v:'v1', d:'sink', t:'get', a:'user_pub_many', u:{user_id:'lyz'}, l:{sid:'sessionID'}} ; 获取用户发布的sink节点
+	 *     
+	 */
+	private ProtoMessage msg;
 	private Socket socket;
 	public SinkThread(Socket socket, ProtoMessage msg){
 		this.socket = socket;
@@ -46,6 +54,8 @@ public class SinkThread implements Runnable,Protocal{
 	public void get(){
 		if(msg.action.equals("one")){
 			getSinkById();
+		}else if(msg.action.equals("user_pub_many")){
+			getSinksByUserId();
 		}
 	}
 	public void post(){
@@ -75,9 +85,10 @@ public class SinkThread implements Runnable,Protocal{
 			return;
 		}
 		UserDao userDao = new UserDao();
+		SinkDao sinkDao = new SinkDao();
 		Sink sink = new Sink();
 		String id = getAuthorizedKey();
-		while(userDao.getUserById(id)!=null){
+		while(sinkDao.getSinkById(id)!=null){
 			id = getAuthorizedKey();//缺陷是当表中的数据非常多的时候，这个步骤耗时长
 		}
 		sink.setId(id);
@@ -85,7 +96,6 @@ public class SinkThread implements Runnable,Protocal{
 		sink.setName(msg.definedContent.getString("name"));
 		sink.setLatitude(new BigDecimal(msg.definedContent.getString("latitude")));
 		sink.setLongitude(new BigDecimal(msg.definedContent.getString("longitude")));
-		SinkDao sinkDao = new SinkDao();
 		sinkDao.addSink(sink);
 		try{
 			OutputStream os = socket.getOutputStream();
@@ -128,7 +138,7 @@ public class SinkThread implements Runnable,Protocal{
 				result = DefinedUtil.composeJSONString("201","success");
 			}
 			else{
-				result = DefinedUtil.composeJSONString("404","has no such id");
+				result = DefinedUtil.composeJSONString("404","has no such id"); 
 			}
 		}
 		else{
@@ -214,5 +224,21 @@ public class SinkThread implements Runnable,Protocal{
 			log.error("delete sink error",ex);
 		}
 	    
+	}
+	
+	private void getSinksByUserId(){
+		String user_id = msg.definedContent.getString("user_id");
+		SinkDao sinkDao = new SinkDao();
+		List<Sink> list = sinkDao.getSinksByUserId(user_id);
+		String result = DefinedUtil.composeJSONString("201", "success", (List)list);
+		try{
+			OutputStream os = socket.getOutputStream();
+			DataOutputStream dos = new DataOutputStream(os);
+			dos.writeUTF(result);
+			dos.close();
+			socket.close();
+		}catch(Exception ex){
+			log.error("delete sink error",ex);
+		}
 	}
 }

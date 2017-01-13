@@ -1,5 +1,7 @@
 package com.base;
 
+import java.util.List;
+
 import com.hibernate.User;
 
 import net.sf.json.JSONObject;
@@ -30,9 +32,24 @@ public class DefinedUtil {
 		 return jo.toString();
 	}
 	public static String composeJSONString(String code,String msg){
+		 JSONObject jo = new JSONObject();
+		 jo.element("c", code);
+		 jo.element("m", msg);
+		 return jo.toString();
+	}
+	public static String composeJSONString(String code,String msg, List<DefinedJSONObject> list){
 		JSONObject jo = new JSONObject();
 		 jo.element("c", code);
 		 jo.element("m", msg);
+		 String data = "[";
+		 for(int i=0;i<list.size();i++){
+			 data += list.get(i).toJSONString();
+			 if(i<list.size()-1){
+				 data +=",";
+			 }
+		 }
+		 data +="]";
+		 jo.element("d", data);
 		 return jo.toString();
 	}
 	public static void main(String args[]){

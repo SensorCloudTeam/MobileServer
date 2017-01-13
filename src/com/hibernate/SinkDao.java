@@ -1,16 +1,19 @@
 package com.hibernate;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 
 public class SinkDao {
-	private static final Log log = LogFactory.getLog(UserDao.class);
+	private static final Log log = LogFactory.getLog(SinkDao.class);
 	public void addSink(Sink sink){
 		Session session = null;
 		try{
@@ -23,7 +26,7 @@ public class SinkDao {
 			
 		}
 		catch(RuntimeException re){
-			log.error("vaidate User instatnce faild",re);
+			log.error("vaidate Sink instatnce faild",re);
 			session.getTransaction().rollback();
 		}finally{
 			session.close();
@@ -41,7 +44,7 @@ public class SinkDao {
 			session.getTransaction().commit();
 		}
 		catch(RuntimeException re){
-			log.error("vaidate User instatnce faild",re);
+			log.error("vaidate Sink instatnce faild",re);
 			session.getTransaction().rollback();
 		}finally{
 			session.close();
@@ -104,5 +107,27 @@ public class SinkDao {
 			session.close();
 		}
 		return result>0?true:false;
+	}
+	
+	public List<Sink> getSinksByUserId(String userId){
+		Session session = null;
+		List<Sink> list = null;
+		try{
+			Configuration cfg = new Configuration();
+			SessionFactory sf = cfg.configure().buildSessionFactory();
+			session = sf.openSession();
+			session.beginTransaction();
+			Criteria cri = session.createCriteria(Sensor.class);
+			cri.add(Restrictions.eq("user_id",userId));
+			list = cri.list();
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.error("get sinks collection error", ex);
+			session.getTransaction().rollback();
+		}finally{
+			session.close();
+		}
+		return list;
 	}
 }
