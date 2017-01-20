@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,6 +20,7 @@ public class SubscriptionThread implements Runnable{
 	 *{v:'v1', d:'subscription', t:'post', a:'one', u:{sensor_id:'',user_id:'lyz',send_frequency:2,address:'',filter:0,threshold_value:0}, l:{sid:'sessionID'}} ; 新增订阅信息
 	 *{v:'v1', d:'subscription', t:'del', a:'one',u:{id:1},l:{sid:'sessionID'}} ； 删除订阅信息，应该限制只能删除自己的订阅信息，有待后续添加
 	 *{v:'v1', d:'subscription', t:'put', a:'one',u:{id:1,address:'',filter:0,threshold_value:0},l:{sid:'sessionID'}} ; 修改订阅信息，address/filter/threshold_value可选
+	 *{v:'v1', d:'subscription', t:'get', a:'user_sub_many', u:{user_id:'test'}, l:{sid:'sessionID'}} ; 获取用户订阅的信息
 	 */
 	private ProtoMessage msg;
 	private Socket socket;
@@ -45,7 +47,9 @@ public class SubscriptionThread implements Runnable{
 		}
 	}
 	public void get(){
-		
+		if(msg.action.equals("user_sub_many")){
+			getSubByUserId();
+		}
 	}
 	public void post(){
 		if(msg.action.equals("one")){
@@ -162,6 +166,22 @@ public class SubscriptionThread implements Runnable{
 			socket.close();
 		}catch(Exception ex){
 			log.error("add subscription error",ex);
+		}
+	}
+	
+	private void getSubByUserId(){
+		String user_id = msg.definedContent.getString("user_id");
+		SubscriptionDao subDao = new SubscriptionDao();
+		List<Subscription> list = subDao.getSubByUserId(user_id);
+		String result = DefinedUtil.composeJSONString("201", "success", (List)list);
+		try{
+			OutputStream os = socket.getOutputStream();
+			DataOutputStream dos = new DataOutputStream(os);
+			dos.writeUTF(result);
+			dos.close();
+			socket.close();
+		}catch(Exception ex){
+			log.error("delete subscription error",ex);
 		}
 	}
 }

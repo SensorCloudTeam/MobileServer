@@ -160,13 +160,15 @@ public class SensorDao {
 			SessionFactory sf = cfg.configure().buildSessionFactory();
 			session = sf.openSession();
 			session.beginTransaction();
-			String sql = "SELECT sensor.* FROM subscription,sensor WHERE subscription.`sensor_id` = sensor.`id` AND subscription.`user_id` = '"+userId+"' ";
-			Query query = session.createSQLQuery(sql).addEntity(Sensor.class);
-			list = query.list();
+			Criteria cri = session.createCriteria(Sensor.class);
+
+			User user=(User)session.load(User.class, userId);
+			cri.add(Restrictions.eq("user",user));
+			list = cri.list();
 			
 		}catch(Exception ex){
 			ex.printStackTrace();
-			log.error("get sensor collection error",ex);
+			log.error("get sensors collection error",ex);
 			session.getTransaction().rollback();
 		}finally{
 			session.close();

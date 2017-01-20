@@ -1,12 +1,15 @@
 package com.hibernate;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 
 public class SubscriptionDao {
 	private static final Log log = LogFactory.getLog(SubscriptionDao.class);
@@ -122,5 +125,28 @@ public class SubscriptionDao {
 			session.close();
 		}
 		return sub;
+	}
+	
+	public List<Subscription> getSubByUserId(String userId){
+		Session session = null;
+		List<Subscription> list = null;
+		try{
+			Configuration cfg = new Configuration();
+			SessionFactory sf = cfg.configure().buildSessionFactory();
+			session = sf.openSession();
+			session.beginTransaction();
+			Criteria cri = session.createCriteria(Subscription.class);
+			
+			User user=(User)session.load(User.class, userId);
+			cri.add(Restrictions.eq("user",user));
+			list = cri.list();
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.error("get subscriptions collection error", ex);
+			session.getTransaction().rollback();
+		}finally{
+			session.close();
+		}
+		return list;
 	}
 }

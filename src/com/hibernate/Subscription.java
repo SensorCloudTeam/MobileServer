@@ -11,6 +11,7 @@ import com.base.DefinedJSONObject;
 public class Subscription implements java.io.Serializable, DefinedJSONObject {
 
 	private Integer id;
+	private Sink sink;
 	private Sensor sensor;
 	private User user;
 	private Date subTime;
@@ -108,12 +109,13 @@ public class Subscription implements java.io.Serializable, DefinedJSONObject {
 	public String toJSONString() {
 		// TODO Auto-generated method stub
 		String result = "{";
-		result += "id:"+id+",";
-		result += "sensor:"+sensor.toJSONString()+",";
-		result += "user:"+user.toJSONString()+",";
+		result += "id:'"+id+"',";
+		result += "sensor:"+(sensor.toJSONString())+",";
+		result += "user:"+(user.toJSONString())+",";
 		result += "sub_time:'"+subTime+"',";
+		result += "}";
 		
-		return null;
+		return result;
 	}
 
 }

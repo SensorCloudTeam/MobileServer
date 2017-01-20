@@ -13,6 +13,8 @@ import com.base.ProtoMessage;
 import com.base.Protocal;
 import com.hibernate.Sensor;
 import com.hibernate.SensorDao;
+import com.hibernate.Sink;
+import com.hibernate.SinkDao;
 
 public class SensorThread implements Runnable,Protocal{
 	private static final Log log = LogFactory.getLog(SensorThread.class); // 日志操作对象
@@ -188,7 +190,7 @@ public class SensorThread implements Runnable,Protocal{
 		
 	}
 	
-	private void getSensorsByUser(){
+	private void getSensorsByUser2(){
 		System.out.println("Sensor-getSensorsByUser");
 		String sid = msg.localContent.getString("sid");
 		if(!DefinedUtil.checkLogin(sid)){
@@ -208,6 +210,21 @@ public class SensorThread implements Runnable,Protocal{
 			socket.close();
 		}catch(Exception ex){
 			log.error("get sensors error",ex);
+		}
+	}
+	private void getSensorsByUser() {
+		String user_id = msg.definedContent.getString("user_id");
+		SensorDao sensorDao = new SensorDao();
+		List<Sensor> list = sensorDao.getSensorsByUserId(user_id);
+		String result = DefinedUtil.composeJSONString("201", "success", (List)list);
+		try{
+			OutputStream os = socket.getOutputStream();
+			DataOutputStream dos = new DataOutputStream(os);
+			dos.writeUTF(result);
+			dos.close();
+			socket.close();
+		}catch(Exception ex){
+			log.error("delete sink error",ex);
 		}
 	}
 }
