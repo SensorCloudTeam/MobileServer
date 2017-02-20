@@ -25,6 +25,7 @@ public class SinkThread implements Runnable,Protocal{
 	 * 	   = {v:'v1', d:'sink', t:'del', a:'one', u:{id:'ewfh1bQS'}, l:{sid:'sessionID'}} ; 删除sink节点
 	 *     = {v:'v1', d:'sink', t:'get', a:'one', u:{id:'ewfh1bQS'}} ; 获取sink节点
 	 *     = {v:'v1', d:'sink', t:'get', a:'user_pub_many', u:{user_id:'lyz'}, l:{sid:'sessionID'}} ; 获取用户发布的sink节点
+	 *     = {v:'v1', d:'sink', t:'get', a:'all', u:{}, l:{sid:'sessionID'}} ; 获取所有sink节点信息
 	 *     
 	 */
 	private ProtoMessage msg;
@@ -56,6 +57,8 @@ public class SinkThread implements Runnable,Protocal{
 			getSinkById();
 		}else if(msg.action.equals("user_pub_many")){
 			getSinksByUserId();
+		}else if(msg.action.equals("all")){
+			getAllSinks();
 		}
 	}
 	public void post(){
@@ -79,11 +82,12 @@ public class SinkThread implements Runnable,Protocal{
 	}
 	
 	private void addSinkNode(){
+		/*
 		String sid = msg.localContent.getString("sid");
 		if(!DefinedUtil.checkLogin(sid)){
 			log.debug("has no login!");
 			return;
-		}
+		}*/
 		UserDao userDao = new UserDao();
 		SinkDao sinkDao = new SinkDao();
 		Sink sink = new Sink();
@@ -125,11 +129,11 @@ public class SinkThread implements Runnable,Protocal{
 	}
 	
 	private void deleteSinkNode(){
-		String sid = msg.localContent.getString("sid");
+		/*String sid = msg.localContent.getString("sid");
 		if(!DefinedUtil.checkLogin(sid)){
 			log.debug("has no login!");
 			return;
-		}
+		}*/
 		String id = msg.definedContent.getString("id");
 		String result = "";
 		if(id!=null){
@@ -231,6 +235,21 @@ public class SinkThread implements Runnable,Protocal{
 		SinkDao sinkDao = new SinkDao();
 		List<Sink> list = sinkDao.getSinksByUserId(user_id);
 		String result = DefinedUtil.composeJSONString("201", "success", (List)list);
+		try{
+			OutputStream os = socket.getOutputStream();
+			DataOutputStream dos = new DataOutputStream(os);
+			dos.writeUTF(result);
+			dos.close();
+			socket.close();
+		}catch(Exception ex){
+			log.error("delete sink error",ex);
+		}
+	}
+	
+	private void getAllSinks(){
+		SinkDao sinkDao = new SinkDao();
+		List<Sink> list = sinkDao.getAllSinksInfo();
+		String result = DefinedUtil.composeJSONString("201", "sucsess",(List)list);
 		try{
 			OutputStream os = socket.getOutputStream();
 			DataOutputStream dos = new DataOutputStream(os);

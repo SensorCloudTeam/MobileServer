@@ -77,7 +77,7 @@ public class SensorDao {
 			Configuration cfg = new Configuration();
 			SessionFactory sf = cfg.configure().buildSessionFactory();
 			session = sf.openSession();
-		    Query query = session.createSQLQuery("select max(id) from sensor where sink_id='"+sinkId+"'");
+		    Query query = session.createSQLQuery("select max(sensor_id) from sensor where sink_id='"+sinkId+"'");
 		    List<Integer> list = query.list();
 		    if(list.size()>0){
 		    	sensorId = list.get(0);
@@ -99,7 +99,7 @@ public class SensorDao {
 			SessionFactory sf = cfg.configure().buildSessionFactory();
 			session = sf.openSession();
 			session.beginTransaction();
-			sensor = (Sensor)session.load(Sink.class, id);
+			sensor = (Sensor)session.load(Sensor.class, id);
 			session.delete(sensor);
 			session.getTransaction().commit();
 		}

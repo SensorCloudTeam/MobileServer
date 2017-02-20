@@ -60,4 +60,8 @@ public class Type implements java.io.Serializable {
 		this.sensors = sensors;
 	}
 
+	public String toJSONString(){
+		String str = name;
+		return str;
+	}
 }

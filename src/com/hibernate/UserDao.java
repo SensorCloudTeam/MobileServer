@@ -11,6 +11,7 @@ import org.hibernate.cfg.Configuration;
 
 public class UserDao {
 	private static final Log log = LogFactory.getLog(UserDao.class);
+	@SuppressWarnings("unchecked")
 	public boolean login(String id,String pwd){
 		try{
 			Configuration cfg = new Configuration();

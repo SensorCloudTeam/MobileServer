@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.base.DefinedUtil;
 import com.base.ProtoMessage;
+import com.hibernate.SubSinkSensor;
 import com.hibernate.Subscription;
 import com.hibernate.SubscriptionDao;
 
@@ -172,7 +173,7 @@ public class SubscriptionThread implements Runnable{
 	private void getSubByUserId(){
 		String user_id = msg.definedContent.getString("user_id");
 		SubscriptionDao subDao = new SubscriptionDao();
-		List<Subscription> list = subDao.getSubByUserId(user_id);
+		List<SubSinkSensor> list = subDao.getSubByUserId(user_id);
 		String result = DefinedUtil.composeJSONString("201", "success", (List)list);
 		try{
 			OutputStream os = socket.getOutputStream();
