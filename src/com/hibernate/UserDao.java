@@ -1,9 +1,11 @@
 package com.hibernate;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,6 +13,7 @@ import org.hibernate.cfg.Configuration;
 
 public class UserDao {
 	private static final Log log = LogFactory.getLog(UserDao.class);
+	@SuppressWarnings("unchecked")
 	public boolean login(String id,String pwd){
 		try{
 			Configuration cfg = new Configuration();
@@ -63,5 +66,45 @@ public class UserDao {
 			session.close();
 		}
 		return user;
+	}
+	
+	public void updateUser(User user){
+		Session session = null;
+		try{
+			Configuration cfg = new Configuration();
+			SessionFactory sf = cfg.configure().buildSessionFactory();
+			session = sf.openSession();
+			session.beginTransaction();
+			session.update(user);
+			session.getTransaction().commit();
+		}catch(Exception ex){
+			log.error("update sink error",ex);
+		}finally{
+			session.close();
+		}
+	}
+	
+	public boolean updateUserKey(String id,String key){
+		String hql = "UPDATE User SET password='"+key+"'"+" where id='"+id+"'";
+		Session session = null;
+		int result=0;
+		try{
+			Configuration cfg = new Configuration();
+			SessionFactory sf = cfg.configure().buildSessionFactory();
+			session = sf.openSession();
+			//Query query = session.createQuery(hql);
+			//query.setParameter("id", id);
+			//query.setParameter("key",new BigDecimal(key));
+			//result = query.executeUpdate();
+			Query query = session.createSQLQuery(hql);
+			result = query.executeUpdate();
+			
+			
+		}catch(Exception ex){
+			log.error("update user error",ex);
+		}finally{
+			session.close();
+		}
+		return result>0?true:false;
 	}
 }

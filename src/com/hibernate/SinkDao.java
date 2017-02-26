@@ -132,4 +132,24 @@ public class SinkDao {
 		}
 		return list;
 	}
+	
+	public List<Sink> getAllSinksInfo(){
+		Session session = null;
+		List<Sink> list = null;
+		try{
+			Configuration cfg = new Configuration();
+			SessionFactory sf = cfg.configure().buildSessionFactory();
+			session = sf.openSession();
+			session.beginTransaction();
+			Criteria cri = session.createCriteria(Sink.class);
+			list = cri.list();
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.error("get sinks collection error", ex);
+			session.getTransaction().rollback();
+		}finally{
+			session.close();
+		}
+		return list;
+	}
 }

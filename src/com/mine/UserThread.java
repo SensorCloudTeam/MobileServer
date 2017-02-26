@@ -72,7 +72,9 @@ public class UserThread implements Runnable, Protocal {
 	}
 
 	public void put() {
-
+		if(msg.action.equals("key")){
+			updateUserKey();
+		}
 	}
 
 	public void del() {
@@ -208,5 +210,35 @@ public class UserThread implements Runnable, Protocal {
 		}
 	}
 
+	public void updateUserKey(){
+		String result = "";
+		String id = msg.definedContent.getString("id");
+		UserDao userDao = new UserDao();
+		User user = userDao.getUserById(id);
+		if(user != null){
+			String preKey = user.getPassword();
+			String key = msg.definedContent.getString("key");
+			if(key != null && key != preKey){
+				user.setPassword(key);
+				userDao.updateUser(user);
+				result = DefinedUtil.composeJSONString("201", "success");
+			}
+			else{
+				result = DefinedUtil.composeJSONString("404", "faild");
+			}
+		}
+		else{
+			result = DefinedUtil.composeJSONString("404", "has no such user");
+		}
+		try{
+			OutputStream os = socket.getOutputStream();
+			DataOutputStream dos = new DataOutputStream(os);
+			dos.writeUTF(result);
+			dos.close();
+			socket.close();
+		}catch(Exception ex){
+			log.error("update user error",ex);
+		}
+	}
 	
 }

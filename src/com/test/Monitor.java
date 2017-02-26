@@ -11,12 +11,22 @@ import net.sf.json.JSONObject;
 public class Monitor {
 	private static String sessionId;
 	public static void main(String args[]){
-		login();
+		//login();
+		//regist();
+		//logout();
+		//updateUserInfo();
 		//getUserInfo();
 		//getSinkInfo();
-		getPubInfo();
-		getSensorInfo();
-		getSubscriptionInfo();
+		//getPubInfo();
+		//getSensorInfo();
+		//getSubscriptionInfo();
+		//getAllSinksInfo();
+		//addSinkNode();
+		//addSensorNode();
+		delSensorNode();
+		delSub();
+		//sendEmail();
+		//sendSms();
 	}
 	
 	public static void login(){
@@ -37,6 +47,55 @@ public class Monitor {
 			ex.printStackTrace();
 		}
 	}
+	public static void regist(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+            DataOutputStream dos=new DataOutputStream(os); 
+            String output = "{v:'v1',d:'user',t:'post',a:'regist',u:{id:'fcytest',pwd:'123456',email:'fangchengying@126.com',},1:{}}";
+            dos.writeUTF(output);
+            InputStream is = socket.getInputStream();
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void logout(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1', d:'user', t:'get', a:'logout', u:{id:'3awNbZqr_1'}, l:{sid:'"+Monitor.sessionId+"'} }";
+	        dos.writeUTF(output);
+            InputStream is = socket.getInputStream(); 
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	public static void updateUserInfo(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1', d:'user', t:'put', a:'key', u:{id:'test',key:'654321'}, l:{} }";
+	        dos.writeUTF(output);
+            InputStream is = socket.getInputStream(); 
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
 	public static void getUserInfo(){
 		try{
 			Socket socket = new Socket("127.0.0.1",3205);
@@ -111,6 +170,125 @@ public class Monitor {
 	        DataOutputStream dos=new DataOutputStream(os);
 	        String output = "{v:'v1',d:'subscription',t:'get',a:'user_sub_many', u:{user_id:'test'}, l:{sid:'"+Monitor.sessionId+"'} }";
             dos.writeUTF(output);
+            InputStream is = socket.getInputStream(); 
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void getAllSinksInfo(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1', d:'sink', t:'get', a:'all', u:{}, l:{sid:'sessionID'}}";
+	        dos.writeUTF(output);
+            InputStream is = socket.getInputStream(); 
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void addSinkNode(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1', d:'sink', t:'post', a:'one', u:{user_id:'test',name:'fcytest1',latitude:'31.132636000',longitude:'121.010937000'}, l:{} }";
+	        dos.writeUTF(output);
+            InputStream is = socket.getInputStream(); 
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void addSensorNode(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1', d:'sensor', t:'post', a:'one', u:{sink_id:'3awNbZqr',name:'test2',type_id:'1',post:'true'}, l:{} }";
+	        dos.writeUTF(output);
+            InputStream is = socket.getInputStream(); 
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void delSensorNode(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1', d:'sensor', t:'del', a:'one', u:{id:'3awNbZqr_1'}, l:{} }";
+	        dos.writeUTF(output);
+            InputStream is = socket.getInputStream(); 
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void delSub(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1', d:'subscription', t:'del', a:'one', u:{id:'2'}, l:{} }";
+	        dos.writeUTF(output);
+            InputStream is = socket.getInputStream(); 
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void sendEmail(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1', d:'subscription', t:'post', a:'email', u:{adress:'fangchengying93@126.com',sensor_id:'ewfh1bQS_3'}, l:{} }";
+	        dos.writeUTF(output);
+            InputStream is = socket.getInputStream(); 
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void sendSms(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1', d:'subscription', t:'post', a:'phone', u:{number:'15201703786',sensor_id:'ewfh1bQS_3'}, l:{} }";
+	        dos.writeUTF(output);
             InputStream is = socket.getInputStream(); 
             DataInputStream dis = new DataInputStream(is);
             String result = dis.readUTF();

@@ -66,7 +66,7 @@ public class SensorThread implements Runnable,Protocal{
 	}
 	public void put(){
 		if(msg.action.equals("one")){
-			updateSinkInfo();
+			updateSensorInfo();
 		}else if(msg.action.equals("name")){
 			
 		}else if(msg.action.equals("position")){
@@ -80,11 +80,12 @@ public class SensorThread implements Runnable,Protocal{
 	}
 	
 	private void addSensorNode(){
+		/*
 		String sid = msg.localContent.getString("sid");
 		if(!DefinedUtil.checkLogin(sid)){
 			log.debug("has no login!");
 			return;
-		}
+		}*/
 		String result = "";
 		String sinkId = msg.definedContent.getString("sink_id");
 		String name = msg.definedContent.getString("name");
@@ -109,7 +110,7 @@ public class SensorThread implements Runnable,Protocal{
 		}
 	}
 	
-	private void updateSinkInfo(){
+	private void updateSensorInfo(){
 		String sid = msg.localContent.getString("sid");
 		if(!DefinedUtil.checkLogin(sid)){
 			log.debug("has no login!");
@@ -147,11 +148,11 @@ public class SensorThread implements Runnable,Protocal{
 	}
 	
 	private void deleteSensorNode(){
-		String sid = msg.localContent.getString("sid");
+		/*String sid = msg.localContent.getString("sid");
 		if(!DefinedUtil.checkLogin(sid)){
 			log.debug("has no login!");
 			return;
-		}
+		}*/
 		SensorDao sensorDao = new SensorDao();
 		String id = msg.definedContent.getString("id");
 		Sensor sensor = sensorDao.deleteSensorById(id);
