@@ -11,7 +11,7 @@ import net.sf.json.JSONObject;
 public class Monitor {
 	private static String sessionId;
 	public static void main(String args[]){
-		//login();
+		login();
 		//regist();
 		//logout();
 		//updateUserInfo();
@@ -19,7 +19,7 @@ public class Monitor {
 		//getSinkInfo();
 		//getPubInfo();
 		//getSensorInfo();
-		getHdataInfo();
+		//getHdataInfo();
 		//getSubscriptionInfo();
 		//getAllSinksInfo();
 		//addSinkNode();
@@ -27,7 +27,7 @@ public class Monitor {
 		//addSub();
 		//delSensorNode();
 		//delSub();
-		//sendEmail();
+		sendEmail();
 		//sendSms();
 	}
 	

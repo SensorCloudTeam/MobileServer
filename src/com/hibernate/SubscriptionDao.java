@@ -12,21 +12,18 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 
 public class SubscriptionDao {
 	private static final Log log = LogFactory.getLog(SubscriptionDao.class);
 	
-	public Subscription addSubscription(String sensorId,String userId,Date subTime,int sendFrequency,String address,String phoneNum,int filter,float thresholdValue){
+	public Subscription addSubscription(String sensorId,String userId,Date subTime,int sendFrequency,String address,int filter,float thresholdValue){
 		Session session = null;
 		Subscription sub = null;
 		try{
 			Configuration cfg = new Configuration();
 			SessionFactory sf = cfg.buildSessionFactory();
-			//SessionFactory sf = cfg.buildSessionFactory(new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build());
-			session = sf.openSession();
+			sf.openSession();
 			session.beginTransaction();
 			Sensor sensor = (Sensor)session.load(Sensor.class, sensorId);
 			User user = (User)session.load(User.class, userId);
@@ -36,10 +33,8 @@ public class SubscriptionDao {
 			sub.setSubTime(subTime);
 			sub.setSendFrequency(sendFrequency);
 			sub.setAddress(address);
-			sub.setPhoneNum(phoneNum);
 			sub.setFilter(filter);
 			sub.setThresholdValue(thresholdValue);
-			session.save(sub);
 			session.getTransaction().commit();
 		}catch(Exception ex){
 			log.error("add subscription error",ex);
@@ -51,34 +46,27 @@ public class SubscriptionDao {
 		return sub;
 	}
 	
-	public void addSubscription(Subscription sub){
+	public boolean addSubscription(Subscription sub){
 		Session session = null;
-		//boolean result = false;
+		boolean result = false;
 		try{
-			Configuration configuration = new Configuration();
-			configuration.configure("hibernate.cfg.xml");
-			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-			        .applySettings(configuration.getProperties()).build();
-			SessionFactory sf = configuration
-			        .buildSessionFactory(serviceRegistry);
-			//Configuration cfg = new Configuration();
-			//cfg.configure("hibernate.cfg.xml");
-			//SessionFactory sf = cfg.buildSessionFactory();
+			Configuration cfg = new Configuration();
+			SessionFactory sf = cfg.buildSessionFactory();
 			session = sf.openSession();
 			session.beginTransaction();
 			session.save(sub);
 			session.getTransaction().commit();
-			//result = true;
+			result = true;
 		}catch(Exception ex){
 			ex.printStackTrace();
 			log.error("add subscription error",ex);
 			session.getTransaction().rollback();
-			//result = false;
+			result = false;
 		}finally{
 			session.close();
 			
 		}
-		//return result;
+		return result;
 	}
 	
 	public Subscription deleteSubscription(String id){
@@ -156,12 +144,11 @@ public class SubscriptionDao {
 			//cri.add(Restrictions.eq("user",user));
 			//list = cri.list();
 			Query query = session.createSQLQuery("SELECT subscription.*,sensor.name as sensor_name,type.name as type_name,sink.name as sink_name,sink.latitude,sink.longitude FROM TYPE,subscription,sensor,sink WHERE sensor.id = subscription.sensor_id AND sink.id = sensor.sink_id AND sensor.type_id = type.id and subscription.user_id='" + userId + "'");
-
 			List list = query.list();
 			SubSinkSensor sss;
 			for(int i = 0; i < list.size();i++){
 				sss = new SubSinkSensor();
-			    Object[] object = (Object[])list.get(i);// 每行记录不再是一个对象 而是一个数组
+			    Object[] object = (Object[])list.get(i);// 每行记录不在是一个对象 而是一个数组
 
 			    //System.out.println((String)object[0]);
 			    Integer id = (Integer)(object[0]);
@@ -171,14 +158,13 @@ public class SubscriptionDao {
 			    Date subTime = (Date)object[3];
 			    Integer sendFrequency = (Integer)object[4];
 			    String address = (String)object[5];
-			    String phoneNum = (String)object[6];
-			    Integer filter = (Integer)object[7];
-			    Float thresholdValue =  (Float)object[8];
-			    String sensorName =  (String)object[9];
-			    String typeName =  (String)object[10];
-			    String sinkName =  (String)object[11];
-			    BigDecimal longitude = (BigDecimal)object[12];
-			    BigDecimal latitude = (BigDecimal)object[13];
+			    Integer filter = (Integer)object[6];
+			    float thresholdValue =  (Float)object[7];
+			    String sensorName =  (String)object[8];
+			    String typeName =  (String)object[9];
+			    String sinkName =  (String)object[10];
+			    BigDecimal longitude = (BigDecimal)object[11];
+			    BigDecimal latitude = (BigDecimal)object[12];
 			    
 			    // 重新封装在一个javabean里面
 			    sss.setId(id);
