@@ -1,20 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
- <session-factory>
-  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.password">123456</property>
-  <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/wsn</property>
-  <property name="hibernate.connection.username">root</property>
-  <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-  <mapping class="com.hibernate.User" resource="com/hibernate/User.hbm.xml"/>
-  <mapping class="com.hibernate.Type" resource="com/hibernate/Type.hbm.xml"/>
-  <mapping class="com.hibernate.SubView" resource="com/hibernate/SubView.hbm.xml"/>
-  <mapping class="com.hibernate.Sink" resource="com/hibernate/Sink.hbm.xml"/>
-  <mapping class="com.hibernate.Subscription" resource="com/hibernate/Subscription.hbm.xml"/>
-  <mapping class="com.hibernate.Sensor" resource="com/hibernate/Sensor.hbm.xml"/>
-  <mapping class="com.hibernate.Pushstate" resource="com/hibernate/Pushstate.hbm.xml"/>
-  <mapping class="com.hibernate.Pushreg" resource="com/hibernate/Pushreg.hbm.xml"/>
- </session-factory>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">123456</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/wsn</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.search.autoregister_listeners">false</property>
+        <property name="hibernate.validator.apply_to_ddl">false</property>
+        <mapping resource="com/hibernate/Pushstate.hbm.xml" />
+        <mapping resource="com/hibernate/Hdata.hbm.xml" />
+        <mapping resource="com/hibernate/Sensor.hbm.xml" />
+        <mapping resource="com/hibernate/Subscription.hbm.xml" />
+        <mapping resource="com/hibernate/Sink.hbm.xml" />
+        <mapping resource="com/hibernate/SubView.hbm.xml" />
+        <mapping resource="com/hibernate/Type.hbm.xml" />
+        <mapping resource="com/hibernate/User.hbm.xml" />
+        <mapping resource="com/hibernate/Pushreg.hbm.xml" />
+    </session-factory>
 </hibernate-configuration>

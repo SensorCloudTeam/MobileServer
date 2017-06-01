@@ -35,6 +35,7 @@ import com.hibernate.SensorDao;
 import com.hibernate.SubSinkSensor;
 import com.hibernate.Subscription;
 import com.hibernate.SubscriptionDao;
+import com.hibernate.UserDao;
 
 public class SubscriptionThread implements Runnable{
 	private static final Log log = LogFactory.getLog(SubscriptionThread.class); // 日志操作对象
@@ -119,20 +120,36 @@ public class SubscriptionThread implements Runnable{
 	}
 	
 	private void addSubscription(){
-		String sid = msg.localContent.getString("sid");
+		/*String sid = msg.localContent.getString("sid");
 		if(!DefinedUtil.checkLogin(sid)){
 			log.debug("has no login!");
 			return;
-		}
+		}*/
+		SensorDao sensorDao = new SensorDao();
+		UserDao userDao = new UserDao();
+		SubscriptionDao subDao = new SubscriptionDao();
+		Subscription sub = new Subscription();
+		
+		sub.setSensor(sensorDao.getSensorById(msg.definedContent.getString("sensor_id")));
+		sub.setUser(userDao.getUserById(msg.definedContent.getString("user_id")));
+		Date subTime = new Date();
+		sub.setSubTime(subTime);
+		sub.setSendFrequency(msg.definedContent.getInt("send_fre"));
+		sub.setAddress(msg.definedContent.getString("adress"));
+		sub.setPhoneNum(msg.definedContent.getString("phoneNum"));
+		sub.setFilter(msg.definedContent.getInt("filter"));
+		sub.setThresholdValue((float)msg.definedContent.getDouble("threshold_value"));
+		subDao.addSubscription(sub);
+		/*
 		String sensorId = msg.definedContent.getString("sensor_id");
 		String userId = msg.definedContent.getString("user_id");
-		Date subTime = new Date();
 		int sendFrequency = msg.definedContent.getInt("send_fre");
 		String address = msg.definedContent.getString("adress");
+		String phoneNum = msg.definedContent.getString("phoneNum");
 		int filter = msg.definedContent.getInt("filter");
 		float thresholdValue = (float)msg.definedContent.getDouble("threshold_value");
-		SubscriptionDao subDao = new SubscriptionDao();
-		Subscription sub = subDao.addSubscription(sensorId, userId, subTime, sendFrequency, address, filter, thresholdValue);
+		//Subscription sub = subDao.addSubscription(sensorId, userId, subTime, sendFrequency, address, phoneNum, filter, thresholdValue);
+		*/
 		String result = "";
 		if(sub!=null){
 			result = DefinedUtil.composeJSONString("201", "success");

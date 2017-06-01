@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 2016-12-30 13:34:40 by Hibernate Tools 4.3.1.Final -->
-<hibernate-mapping default-lazy="false" package="com.hibernate">
- <class catalog="wsn" name="Type" table="type">
+<!-- Generated 2017-5-31 16:45:33 by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping default-lazy="false">
+ <class catalog="wsn" name="com.hibernate.Type" table="type">
   <id name="id" type="java.lang.Integer">
    <column name="id"/>
    <generator class="identity"/>
   </id>
   <property generated="never" lazy="false" name="name" type="string">
    <column length="20" name="name" not-null="true">
-    <comment>´«¸ÐÆ÷ÀàÐÍ</comment>
+    <comment>????????¡§?¡À????</comment>
    </column>
   </property>
   <property generated="never" lazy="false" name="unitSymbol" type="string">
    <column length="50" name="unit_symbol" not-null="true">
-    <comment>Êý¾ÝµÄµ¥Î»·ûºÅ£¬±ÈÈçÎÂ¶È´«¸ÐÆ÷µ¥Î»Îª¡®¡æ¡¯</comment>
+    <comment>??¡ã?????????????????¡¤?????¡±?????????????????¡§??????????¢ã?????¢ã?</comment>
    </column>
   </property>
   <set fetch="select" inverse="true" lazy="true" name="sensors"
    sort="unsorted" table="sensor">
    <key>
     <column name="type_id">
-     <comment>Íâ¼ü£¬Ö¸Ïòtype±íÖÐµÄid</comment>
+     <comment>?¡è¨C¨¦¡±?????????¡®type¨¨?¡§??????id</comment>
     </column>
    </key>
-   <one-to-many class="Sensor"/>
+   <one-to-many class="com.hibernate.Sensor"/>
   </set>
  </class>
 </hibernate-mapping>

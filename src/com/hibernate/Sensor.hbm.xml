@@ -1,61 +1,61 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 2016-12-30 13:34:40 by Hibernate Tools 4.3.1.Final -->
-<hibernate-mapping default-lazy="false" package="com.hibernate">
- <class catalog="wsn" name="Sensor" table="sensor">
+<!-- Generated 2017-5-31 16:45:33 by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping default-lazy="false">
+ <class catalog="wsn" name="com.hibernate.Sensor" table="sensor">
   <id name="id" type="string">
    <column length="26" name="id"/>
    <generator class="assigned"/>
   </id>
-  <many-to-one class="Sink" fetch="select" name="sink">
+  <many-to-one class="com.hibernate.Sink" fetch="select" name="sink">
    <column length="20" name="sink_id" not-null="true">
-    <comment>Íâ¼ü£¬Ö¸Ïòsink±íÖÐµÄid</comment>
+    <comment>?¡è¨C¨¦¡±?????????¡®sink¨¨?¡§??????id</comment>
    </column>
   </many-to-one>
-  <many-to-one class="Type" fetch="select" name="type">
+  <many-to-one class="com.hibernate.Type" fetch="select" name="type">
    <column name="type_id">
-    <comment>Íâ¼ü£¬Ö¸Ïòtype±íÖÐµÄid</comment>
+    <comment>?¡è¨C¨¦¡±?????????¡®type¨¨?¡§??????id</comment>
    </column>
   </many-to-one>
   <property generated="never" lazy="false" name="sensorId" type="int">
    <column name="sensor_id" not-null="true">
-    <comment>Ò»¸ö·¢²¼½Úµã·ÖÅä¸ø´«¸ÐÆ÷µÄÄÚ²¿id</comment>
+    <comment>??¢ã?????¡®???¨¨????????¨¦¡­????????????¡§?????¡­¨¦?¡§id</comment>
    </column>
   </property>
   <property generated="never" lazy="false" name="name" type="string">
    <column length="100" name="name" not-null="true">
-    <comment>´«¸ÐÆ÷Ãû×Ö</comment>
+    <comment>????????¡§?????¡ª</comment>
    </column>
   </property>
   <property generated="never" lazy="false" name="dataTime" type="timestamp">
-   <column length="19" name="data_time" not-null="true">
-    <comment>½ÓÊÜÊý¾ÝµÄÊ±¼ä</comment>
+   <column length="0" name="data_time" not-null="true">
+    <comment>?????¡ª??¡ã???????¡ª?¨¦¡ª?</comment>
    </column>
   </property>
   <property generated="never" lazy="false" name="sampleRate" type="java.lang.Integer">
    <column name="sample_rate">
-    <comment>½ÓÊÜÊý¾ÝµÄÆµÂÊ(s/´Î)</comment>
+    <comment>?????¡ª??¡ã??????¨¦?¡®???(s/???)</comment>
    </column>
   </property>
   <property generated="never" lazy="false" name="value" type="string">
    <column length="10000" name="value">
-    <comment>´«¸ÐÆ÷µÄÊý¾Ý</comment>
+    <comment>????????¡§?????¡ã???</comment>
    </column>
   </property>
   <property generated="never" lazy="false" name="post" type="java.lang.Boolean">
    <column name="post">
-    <comment>ÊÇ·ñ¶ÔÍâ·¢²¼</comment>
+    <comment>??????????¡è¨C??¡®???</comment>
    </column>
   </property>
   <set fetch="select" inverse="true" lazy="true" name="subscriptions"
    sort="unsorted" table="subscription">
    <key>
     <column length="26" name="sensor_id" not-null="true">
-     <comment>Òª¶©ÔÄµÄ´«¸ÐÆ÷id</comment>
+     <comment>¨¨??¨¨??¨¦?¡­???????????¡§id</comment>
     </column>
    </key>
-   <one-to-many class="Subscription"/>
+   <one-to-many class="com.hibernate.Subscription"/>
   </set>
  </class>
 </hibernate-mapping>

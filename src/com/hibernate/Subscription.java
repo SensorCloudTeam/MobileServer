@@ -16,6 +16,7 @@ public class Subscription implements java.io.Serializable, DefinedJSONObject {
 	private Date subTime;
 	private Integer sendFrequency;
 	private String address;
+	private String phoneNum;
 	private int filter;
 	private Float thresholdValue;
 	
@@ -26,23 +27,33 @@ public class Subscription implements java.io.Serializable, DefinedJSONObject {
 	public Subscription() {
 	}
 
-	public Subscription(Sensor sensor, User user, Date subTime, String address, int filter) {
+	public Subscription(Sensor sensor, User user, Date subTime, String address,String phoneNum, int filter) {
 		this.sensor = sensor;
 		this.user = user;
 		this.subTime = subTime;
 		this.address = address;
+		this.phoneNum = phoneNum;
 		this.filter = filter;
 	}
 
-	public Subscription(Sensor sensor, User user, Date subTime, Integer sendFrequency, String address, int filter,
+	public Subscription(Sensor sensor, User user, Date subTime, Integer sendFrequency, String address, String phoneNum, int filter,
 			Float thresholdValue) {
 		this.sensor = sensor;
 		this.user = user;
 		this.subTime = subTime;
 		this.sendFrequency = sendFrequency;
 		this.address = address;
+		this.phoneNum = phoneNum;
 		this.filter = filter;
 		this.thresholdValue = thresholdValue;
+	}
+
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
 	}
 
 	public Integer getId() {

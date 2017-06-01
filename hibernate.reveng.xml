@@ -2,6 +2,7 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
 
 <hibernate-reverse-engineering>
+  <table-filter match-catalog="wsn" match-name="hdata"/>
   <table-filter match-catalog="wsn" match-name="pushreg"/>
   <table-filter match-catalog="wsn" match-name="pushstate"/>
   <table-filter match-catalog="wsn" match-name="sensor"/>

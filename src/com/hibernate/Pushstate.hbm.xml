@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 2016-12-30 13:34:40 by Hibernate Tools 4.3.1.Final -->
-<hibernate-mapping default-lazy="false" package="com.hibernate">
- <class catalog="wsn" name="Pushstate" table="pushstate">
-  <id name="id" type="string">
-   <column length="50" name="id"/>
-   <generator class="assigned"/>
-  </id>
- </class>
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2017-5-31 16:45:33 by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="com.hibernate.Pushstate" table="pushstate" catalog="wsn" optimistic-lock="version">
+        <id name="id" type="string">
+            <column name="id" length="50" />
+            <generator class="assigned" />
+        </id>
+    </class>
 </hibernate-mapping>

@@ -1,46 +1,49 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 2016-12-30 13:34:40 by Hibernate Tools 4.3.1.Final -->
-<hibernate-mapping default-lazy="false" package="com.hibernate">
- <class catalog="wsn" name="Subscription" table="subscription">
+<!-- Generated 2017-5-31 16:45:33 by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping default-lazy="false">
+ <class catalog="wsn" name="com.hibernate.Subscription" table="subscription">
   <id name="id" type="java.lang.Integer">
    <column name="id"/>
    <generator class="identity"/>
   </id>
-  <many-to-one class="Sensor" fetch="select" name="sensor">
+  <many-to-one class="com.hibernate.Sensor" fetch="select" name="sensor">
    <column length="26" name="sensor_id" not-null="true">
-    <comment>Òª¶©ÔÄµÄ´«¸ÐÆ÷id</comment>
+    <comment>¨¨??¨¨??¨¦?¡­???????????¡§id</comment>
    </column>
   </many-to-one>
-  <many-to-one class="User" fetch="select" name="user">
+  <many-to-one class="com.hibernate.User" fetch="select" name="user">
    <column length="14" name="user_id" not-null="true">
-    <comment>¶©ÔÄÈËµÄid</comment>
+    <comment>¨¨??¨¦?¡­??????id</comment>
    </column>
   </many-to-one>
   <property generated="never" lazy="false" name="subTime" type="timestamp">
-   <column length="19" name="sub_time" not-null="true">
-    <comment>¶©ÔÄ·¢ÆðµÄÊ±¼ä</comment>
+   <column length="0" name="sub_time" not-null="true">
+    <comment>¨¨??¨¦?¡­??¡®¨¨?¡¤????¡ª?¨¦¡ª?</comment>
    </column>
   </property>
   <property generated="never" lazy="false" name="sendFrequency" type="java.lang.Integer">
    <column name="send_frequency">
-    <comment>ÍÆËÍÆµÂÊ</comment>
+    <comment>??¡§¨¦¢ã?¨¦?¡®???</comment>
    </column>
   </property>
   <property generated="never" lazy="false" name="address" type="string">
-   <column name="address" not-null="true">
-    <comment>¶©ÔÄÐÅÏ¢µÄµØÖ·,µØÖ·¿ÉÒÔÊÇÓÊÏä£¬ÊÖ»úºÅ</comment>
+   <column name="address">
+    <comment>¨¨??¨¦?¡­???????????¡ã??¢ã,??¡ã??¢ã?????????¨¦????¡À????¡ë??????¡¤</comment>
    </column>
+  </property>
+  <property generated="never" lazy="false" name="phoneNum" type="string">
+   <column length="11" name="phoneNum"/>
   </property>
   <property generated="never" lazy="false" name="filter" type="int">
    <column name="filter" not-null="true">
-    <comment>¹ýÂËÌõ¼þ</comment>
+    <comment>¨¨????¡è??????</comment>
    </column>
   </property>
   <property generated="never" lazy="false" name="thresholdValue" type="java.lang.Float">
    <column name="threshold_value" precision="12" scale="0">
-    <comment>¹ýÂËãÐÖµ</comment>
+    <comment>¨¨????¡è¨¦???¢ã?</comment>
    </column>
   </property>
  </class>

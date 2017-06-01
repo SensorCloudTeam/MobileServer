@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.mine.UserThread;
+import com.publish.HdataThread;
 import com.publish.SensorThread;
 import com.publish.SinkThread;
 import com.publish.SubscriptionThread;
@@ -65,6 +66,9 @@ public class DispatchServer {
 						new Thread(r).start();
 					}else if(domain.equals("subscription")){
 						Runnable r = new SubscriptionThread(socket,msg);
+						new Thread(r).start();
+					}else if(domain.equals("hdata")){
+						Runnable r = new HdataThread(socket,msg);
 						new Thread(r).start();
 					}else {
 						log.debug("domain warning, has no defined " + domain);
