@@ -158,13 +158,14 @@ public class SubscriptionDao {
 			    Date subTime = (Date)object[3];
 			    Integer sendFrequency = (Integer)object[4];
 			    String address = (String)object[5];
-			    Integer filter = (Integer)object[6];
-			    float thresholdValue =  (Float)object[7];
-			    String sensorName =  (String)object[8];
-			    String typeName =  (String)object[9];
-			    String sinkName =  (String)object[10];
-			    BigDecimal longitude = (BigDecimal)object[11];
-			    BigDecimal latitude = (BigDecimal)object[12];
+			    String phoneNum = (String)object[6];
+			    Integer filter = (Integer)object[7];
+			    Float thresholdValue =  (Float)object[8];
+			    String sensorName =  (String)object[9];
+			    String typeName =  (String)object[10];
+			    String sinkName =  (String)object[11];
+			    BigDecimal longitude = (BigDecimal)object[12];
+			    BigDecimal latitude = (BigDecimal)object[13];
 			    
 			    // 重新封装在一个javabean里面
 			    sss.setId(id);
@@ -173,6 +174,7 @@ public class SubscriptionDao {
 			    sss.setSubTime(subTime);
 			    sss.setSendFrequency(sendFrequency);
 			    sss.setAddress(address);
+			    sss.setPhoneNum(phoneNum);
 			    sss.setFilter(filter);
 			    sss.setThresholdValue(thresholdValue);
 			    sss.setSensorName(sensorName);

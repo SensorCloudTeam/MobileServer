@@ -18,8 +18,9 @@ public class Monitor {
 		//getUserInfo();
 		//getSinkInfo();
 		//getPubInfo();
-		//getSensorInfo();
+		getSensorInfo();
 		//getHdataInfo();
+		//getSensorHdataInfo();
 		//getSubscriptionInfo();
 		//getAllSinksInfo();
 		//addSinkNode();
@@ -27,7 +28,7 @@ public class Monitor {
 		//addSub();
 		//delSensorNode();
 		//delSub();
-		sendEmail();
+		//sendEmail();
 		//sendSms();
 	}
 	
@@ -171,6 +172,23 @@ public class Monitor {
 			OutputStream os=socket.getOutputStream();  
 	        DataOutputStream dos=new DataOutputStream(os);
 	        String output = "{v:'v1',d:'hdata',t:'get',a:'hdata_many', u:{sink_id:'ewfh1bQS'}, l:{} }";
+            dos.writeUTF(output);
+            InputStream is = socket.getInputStream();
+            DataInputStream dis = new DataInputStream(is);
+            String result = dis.readUTF();
+            System.out.println(result);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void getSensorHdataInfo(){
+		try{
+			Socket socket = new Socket("127.0.0.1",3205);
+			OutputStream os=socket.getOutputStream();  
+	        DataOutputStream dos=new DataOutputStream(os);
+	        String output = "{v:'v1',d:'hdata',t:'get',a:'one', u:{sink_id:'ewfh1bQS',sensor_id:'1'}, l:{} }";
             dos.writeUTF(output);
             InputStream is = socket.getInputStream();
             DataInputStream dis = new DataInputStream(is);

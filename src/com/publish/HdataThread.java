@@ -51,7 +51,7 @@ public class HdataThread implements Runnable,Protocal{
 	
 	public void get(){
 		if(msg.action.equals("one")){
-			
+			getSensorHdata();
 		}else if(msg.action.equals("hdata_many")){
 			getDatasBySink();
 		}
@@ -70,6 +70,25 @@ public class HdataThread implements Runnable,Protocal{
 		String sinkId = msg.definedContent.getString("sink_id");
 		HdataDao hdataDao = new HdataDao();
 		List<HdataSensors> list = hdataDao.getHdatasBySinkId(sinkId);
+		try{
+			OutputStream os = socket.getOutputStream();
+			DataOutputStream dos = new DataOutputStream(os);
+			String result;
+			result = DefinedUtil.composeJSONString("201", "success",(List)list);
+			dos.writeUTF(result);
+			dos.close();
+			socket.close();
+		}catch(Exception ex){
+			log.error("get hdatas error",ex);
+		}
+	}
+	
+	private void getSensorHdata(){
+		String sinkId = msg.definedContent.getString("sink_id");
+		String sensorid = msg.definedContent.getString("sensor_id");
+		int sensorId = Integer.parseInt(sensorid);
+		HdataDao hdataDao = new HdataDao();
+		List<HdataSensors> list = hdataDao.getSensorHdata(sinkId, sensorId);
 		try{
 			OutputStream os = socket.getOutputStream();
 			DataOutputStream dos = new DataOutputStream(os);
